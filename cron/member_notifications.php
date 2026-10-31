@@ -18,6 +18,9 @@ require_once __DIR__ . '/../includes/member-notify.php';
 
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 $conn->set_charset('utf8mb4');
+// Reminder times (Saturday 8 am, Sunday 7 am, day-before from 8 am) are Uganda time, whatever the server's own zone.
+date_default_timezone_set('Africa/Kampala');
+$conn->query("SET time_zone = '+03:00'");
 
 if (!mn_ready($conn)) exit("Run database/member_notifications.sql first.\n");
 if (!(int)($conn->query("SELECT GET_LOCK('member_notifications', 0)")->fetch_row()[0] ?? 0)) exit("Already running.\n");
