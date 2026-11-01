@@ -1,4 +1,4 @@
--- MEMBER CONTENT: DEPARTMENT TIPS + BIBLE VERSES + ORDER OF SERVICE + CHURCH HYMNS
+-- MEMBER CONTENT: DEPARTMENT TIPS + BIBLE VERSES + CHURCH PRAYERS + ORDER OF SERVICE + CHURCH SONGS
 -- Back up the database first, then run this file once. It is safe to re-run.
 --
 -- Access is granted through Users > Permissions (role or user level). Admins have every permission.
@@ -43,6 +43,26 @@ CREATE TABLE IF NOT EXISTS bible_verses (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     INDEX idx_verses_status_date (status, display_date)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================================
+-- CHURCH PRAYERS (member prayer guide)
+-- ============================================================
+
+CREATE TABLE IF NOT EXISTS church_prayers (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(180) NOT NULL,
+    prayer_category VARCHAR(80) NULL,
+    prayer_text TEXT NOT NULL,
+    scripture_reference VARCHAR(180) NULL,
+    status ENUM('Draft','Published') NOT NULL DEFAULT 'Draft',
+    published_at DATETIME NULL,
+    created_by INT NULL,
+    updated_by INT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_church_prayers_status (status),
+    INDEX idx_church_prayers_category (prayer_category)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ============================================================
@@ -119,7 +139,8 @@ INSERT INTO permissions(permission_key,permission_name,module_name) VALUES
 ('member.tips.view','View published Health and Education Department tips','Department Tips'),
 ('bible_verses.manage','Add, edit, publish and delete dashboard Bible verses','Worship Resources'),
 ('order_of_service.manage','Add, edit, publish and delete Orders of Service','Worship Resources'),
-('hymns.manage','Add, edit, publish and delete Church of Uganda hymns','Worship Resources'),
+('prayers.manage','Add, edit, publish and delete Church Prayers','Worship Resources'),
+('hymns.manage','Add, edit, publish and delete Church of Uganda songs','Worship Resources'),
 ('member.worship.view','View published Orders of Service and hymns','Worship Resources')
 ON DUPLICATE KEY UPDATE permission_name=VALUES(permission_name),module_name=VALUES(module_name);
 

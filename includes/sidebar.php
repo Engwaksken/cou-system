@@ -1188,9 +1188,21 @@ $memberId =
 
         navLink(
             $sidebarBaseUrl .
+            'member/prayers.php',
+            'fa-praying-hands',
+            'Prayer Guide',
+            $dir,
+            $cur,
+            'prayers.php',
+            'member.worship.view'
+        );
+
+
+        navLink(
+            $sidebarBaseUrl .
             'member/hymns.php',
             'fa-music',
-            'Church Hymns',
+            'Church Songs',
             $dir,
             $cur,
             'hymns.php',
@@ -1739,6 +1751,7 @@ $memberId =
             sidebar_can('health_tips.manage')
             || sidebar_can('education_tips.manage')
             || sidebar_can('bible_verses.manage')
+            || sidebar_can('prayers.manage')
             || sidebar_can('order_of_service.manage')
             || sidebar_can('hymns.manage')
         ): ?>
@@ -1789,6 +1802,17 @@ $memberId =
             'bible_verses.manage'
         );
 
+        navLink(
+            $sidebarBaseUrl .
+            'worship_resources/prayers.php',
+            'fa-praying-hands',
+            'Church Prayers',
+            $dir,
+            $cur,
+            'prayers.php',
+            'prayers.manage'
+        );
+
 
         navLink(
             $sidebarBaseUrl .
@@ -1806,7 +1830,7 @@ $memberId =
             $sidebarBaseUrl .
             'worship_resources/hymns.php',
             'fa-music',
-            'Church Hymns',
+            'Church Songs',
             $dir,
             $cur,
             'hymns.php',
