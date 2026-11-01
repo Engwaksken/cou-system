@@ -424,6 +424,7 @@ $programRowsJson = json_encode(
             enctype="multipart/form-data"
             id="programForm"
             autocomplete="off"
+            data-form-tabs
         >
             <?php program_form_header('save_program', '../church_programs/'); ?>
             <input type="hidden" name="id" id="programId" value="0">
@@ -441,7 +442,7 @@ $programRowsJson = json_encode(
 
             <div class="church-modal-body">
                 <div class="church-form church-program-modal-form">
-                    <div class="church-form-row">
+                    <div class="church-form-row" data-tab-start="Program Details">
                         <div class="church-form-group">
                             <label for="programTitle">Program Title <span class="req">*</span></label>
                             <input
@@ -463,7 +464,7 @@ $programRowsJson = json_encode(
                         </div>
                     </div>
 
-                    <div class="church-form-row church-form-row-3">
+                    <div class="church-form-row church-form-row-3" data-tab-start="Schedule">
                         <div class="church-form-group">
                             <label for="programDate">Program Date <span class="req">*</span></label>
                             <input
@@ -486,7 +487,7 @@ $programRowsJson = json_encode(
                         </div>
                     </div>
 
-                    <div class="church-form-row">
+                    <div class="church-form-row" data-tab-start="Audience">
                         <div class="church-form-group">
                             <label for="programAudienceType">Audience <span class="req">*</span></label>
                             <select id="programAudienceType" name="audience_type" required>
@@ -507,7 +508,7 @@ $programRowsJson = json_encode(
                         </div>
                     </div>
 
-                    <div class="church-form-group program-departments-field" id="programDepartmentsField" hidden>
+                    <div class="church-form-group program-departments-field" id="programDepartmentsField" data-tab="Audience" hidden>
                         <label>Select Departments <span class="req">*</span></label>
                         <?php if ($departments): ?>
                             <div class="program-department-tools">
@@ -528,7 +529,7 @@ $programRowsJson = json_encode(
                         <?php endif; ?>
                     </div>
 
-                    <div class="church-form-group">
+                    <div class="church-form-group" data-tab-start="Description & Attachments">
                         <label for="programMeetingLink">Online Meeting Link</label>
                         <input
                             type="url"

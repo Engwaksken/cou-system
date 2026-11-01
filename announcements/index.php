@@ -543,7 +543,7 @@ foreach ($rows as $row) {
 <!-- Add/Edit Modal -->
 <div class="church-modal" id="announcementFormModal" aria-hidden="true">
     <div class="church-modal-dialog church-modal-dialog-lg">
-        <form method="post" action="../church_admin/process.php" id="announcementForm" autocomplete="off">
+        <form method="post" action="../church_admin/process.php" id="announcementForm" autocomplete="off" data-form-tabs>
             <?php announcement_form_header('save_announcement', '../announcements/'); ?>
             <input type="hidden" name="id" id="announcementId" value="0">
 
@@ -557,7 +557,7 @@ foreach ($rows as $row) {
 
             <div class="church-modal-body">
                 <div class="church-form">
-                    <div class="church-form-group">
+                    <div class="church-form-group" data-tab-start="Message">
                         <label for="announcementTitle">Title <span class="required">*</span></label>
                         <input
                             type="text"
@@ -578,7 +578,7 @@ foreach ($rows as $row) {
                         ></textarea>
                     </div>
 
-                    <div class="church-form-row">
+                    <div class="church-form-row" data-tab-start="Audience & Priority">
                         <div class="church-form-group">
                             <label for="announcementAudienceType">Audience</label>
                             <select id="announcementAudienceType" name="audience_type" required>
@@ -631,7 +631,7 @@ foreach ($rows as $row) {
                         <?php endif; ?>
                     </div>
 
-                    <div class="church-form-row">
+                    <div class="church-form-row" data-tab-start="Publishing">
                         <div class="church-form-group">
                             <label for="announcementPublishFrom">Publish From</label>
                             <input

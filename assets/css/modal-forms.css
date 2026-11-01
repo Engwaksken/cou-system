@@ -1,0 +1,14 @@
+/* Narrower, consistent entry dialogs; long forms are split with form-tabs.js. */
+.church-modal-dialog,
+.church-modal-dialog-lg { width: min(760px, 100%); }
+.church-modal-dialog-sm { width: min(500px, 100%); }
+.church-modal-dialog-lg .church-modal-body { max-height: min(68vh, 680px); }
+.modal.modal-lg { width: min(760px, calc(100vw - 32px)); max-width: 760px; }
+.cb-modal-card { width: min(760px, calc(100vw - 32px)); max-width: 760px; max-height: calc(100vh - 32px); overflow: auto; }
+.birds-modal-dialog { width: min(740px, calc(100vw - 32px)); max-width: 740px; }
+@media (max-width: 640px) {
+    .church-modal { padding: 12px 8px; }
+    .church-modal-dialog, .church-modal-dialog-lg, .church-modal-dialog-sm,
+    .modal.modal-lg, .cb-modal-card, .birds-modal-dialog { width: 100%; max-width: 100%; }
+    .church-modal-dialog-lg .church-modal-body { max-height: calc(100dvh - 150px); }
+}

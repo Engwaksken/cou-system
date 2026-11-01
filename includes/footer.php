@@ -3,6 +3,7 @@
 </div><!-- /.cms-layout -->
 <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/statistics.css?v=1">
 <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/form-tabs.css?v=<?= (int) @filemtime(__DIR__ . '/../assets/css/form-tabs.css') ?>">
+<link rel="stylesheet" href="<?= BASE_URL ?>assets/css/modal-forms.css?v=<?= (int) @filemtime(__DIR__ . '/../assets/css/modal-forms.css') ?>">
 <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/bulk-delete.css?v=1">
 <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/accessibility.css?v=2">
 <div class="accessibility-widget" id="accessibilityWidget">
