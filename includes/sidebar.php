@@ -1129,12 +1129,12 @@ $memberId =
 
         navLink(
             $sidebarBaseUrl .
-            'member/announcements.php',
+            'member/updates.php',
             'fa-bullhorn',
-            'Announcements',
+            'Church Updates',
             $dir,
             $cur,
-            'announcements.php',
+            'updates.php',
             'member.announcements.view'
         );
 

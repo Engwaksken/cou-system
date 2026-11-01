@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-$pageTitle = 'Announcements';
+$pageTitle = 'Church Updates';
 require_once __DIR__ . '/../includes/header.php';
 require_once __DIR__ . '/_helpers.php';
 require_permission('member.announcements.view');
@@ -9,7 +9,7 @@ $rows = mp_table($conn,'church_announcements')
  ? mp_rows($conn,"SELECT * FROM church_announcements WHERE status='Published' AND (publish_from IS NULL OR publish_from<=NOW()) AND (publish_until IS NULL OR publish_until>=NOW()) ORDER BY FIELD(priority,'Urgent','Important','Normal'),publish_from DESC,id DESC")
  : (mp_table($conn,'announcements') ? mp_rows($conn,"SELECT * FROM announcements ORDER BY id DESC") : []);
 $stats=[
- ['label'=>'Announcements','value'=>count($rows),'icon'=>'fa-bullhorn'],
+  ['label'=>'Updates','value'=>count($rows),'icon'=>'fa-bullhorn'],
  ['label'=>'Urgent','value'=>count(array_filter($rows,fn($r)=>strtolower((string)($r['priority']??''))==='urgent')),'icon'=>'fa-triangle-exclamation'],
  ['label'=>'Important','value'=>count(array_filter($rows,fn($r)=>strtolower((string)($r['priority']??''))==='important')),'icon'=>'fa-circle-info'],
  ['label'=>'Published','value'=>count(array_filter($rows,fn($r)=>strtolower((string)($r['status']??'published'))==='published')),'icon'=>'fa-eye']
@@ -22,7 +22,7 @@ require_once __DIR__ . '/../includes/sidebar.php';
 <?php require_once __DIR__ . '/../includes/topbar.php'; ?>
 <div class="content-area member-module-page">
 <div class="member-module-header">
-  <div><h2><i class="fas fa-bullhorn"></i> Announcements</h2><p>Read current church notices and important updates.</p></div>
+  <div><h2><i class="fas fa-bullhorn"></i> Church Updates</h2><p>Stay informed with current church notices, news, and important updates.</p></div>
 </div>
 <div class="stats-grid module-stats-grid">
   <?php foreach ($stats as $stat): ?>
@@ -32,9 +32,9 @@ require_once __DIR__ . '/../includes/sidebar.php';
   </div>
   <?php endforeach; ?>
 </div>
-<div class="page-toolbar"><div class="page-toolbar-search"><i class="fas fa-search"></i><input type="search" data-member-search placeholder="Search announcements..." aria-label="Search announcements"></div><div class="page-toolbar-filters"><select data-member-filter="priority" aria-label="Priority"><option value="">All Priorities</option><option>Normal</option><option>Important</option><option>Urgent</option></select><select data-member-filter="audience" aria-label="Audience"><option value="">All Audiences</option><option>All Members</option><option>Selected Departments</option></select></div><div class="page-toolbar-actions"><a class="btn btn-outline-primary page-toolbar-refresh" href="announcements.php"><i class="fas fa-rotate-right"></i> Refresh</a></div></div>
+<div class="page-toolbar"><div class="page-toolbar-search"><i class="fas fa-search"></i><input type="search" data-member-search placeholder="Search updates..." aria-label="Search updates"></div><div class="page-toolbar-filters"><select data-member-filter="priority" aria-label="Priority"><option value="">All Priorities</option><option>Normal</option><option>Important</option><option>Urgent</option></select><select data-member-filter="audience" aria-label="Audience"><option value="">All Audiences</option><option>All Members</option><option>Selected Departments</option></select></div><div class="page-toolbar-actions"><a class="btn btn-outline-primary page-toolbar-refresh" href="updates.php"><i class="fas fa-rotate-right"></i> Refresh</a></div></div>
 <div class="member-module-card">
-  <div class="member-module-card-head"><h3><i class="fas fa-bullhorn"></i> Announcements</h3><span class="member-module-count"><?= count($rows) ?> records</span></div>
+  <div class="member-module-card-head"><h3><i class="fas fa-bullhorn"></i> Recent Updates</h3><span class="member-module-count"><?= count($rows) ?> records</span></div>
   <div class="member-module-body">
     <div class="member-module-table-wrap">
       <table class="member-module-table"><thead><tr><th>#</th><th>Title</th><th>Message</th><th>Priority</th><th>Audience</th><th>Published</th><th>Action</th></tr></thead><tbody>
