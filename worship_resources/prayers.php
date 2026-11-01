@@ -16,7 +16,7 @@ $recordFlags = JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP;
 <link rel="stylesheet" href="../assets/css/church-admin.css"><link rel="stylesheet" href="../assets/css/church-manager.css">
 <div class="main-content"><?php include '../includes/topbar.php'; ?><div class="content-area">
 <?php ce_show_flash(); ?>
-<div class="church-page-head"><div><h2><i class="fas fa-praying-hands"></i> Church Prayers</h2><p>Create and publish prayer guides for members and families.</p></div><?php if ($ready): ?><button type="button" class="btn btn-primary" id="addBtn"><i class="fas fa-plus"></i> Add Prayer</button><?php endif; ?></div>
+<div class="church-page-head"><div><h2><i class="fas fa-praying-hands"></i> Church Prayers</h2><p>Create and publish prayer guides for members and families.</p></div><?php if ($ready): ?><button type="button" class="btn btn-outline-primary" data-content-bulk="prayers"><i class="fas fa-layer-group"></i> Add Multiple</button><button type="button" class="btn btn-primary" id="addBtn"><i class="fas fa-plus"></i> Add Prayer</button><?php endif; ?></div>
 <?php mc_worship_tabs('prayers'); ?>
 <?php if (!$ready): ?><div class="alert alert-warning"><strong>Setup required.</strong> Run <code>database/member_content.sql</code> to create the Church Prayers table and permissions.</div><?php else: ?>
 <div class="church-stats"><div class="church-stat"><div class="church-stat-icon"><i class="fas fa-praying-hands"></i></div><div><b><?= count($rows) ?></b><span>Total Prayers</span></div></div><div class="church-stat"><div class="church-stat-icon"><i class="fas fa-eye"></i></div><div><b><?= $publishedCount ?></b><span>Published</span></div></div></div>

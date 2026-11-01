@@ -45,7 +45,7 @@ require_once __DIR__ . '/../includes/sidebar.php';
 <div class="member-module-header">
   <div><h2><i class="fas fa-music"></i> Church Songs</h2><p>Read and study church songs in your free time.</p></div>
 </div>
-<?php if ($hymnId > 0): ?><div class="member-info-banner"><i class="fas fa-circle-info"></i> That hymn is not available.</div><?php endif; ?>
+<?php if ($hymnId > 0): ?><div class="member-info-banner"><i class="fas fa-circle-info"></i> That song is not available.</div><?php endif; ?>
 <div class="page-toolbar"><div class="page-toolbar-search"><i class="fas fa-search"></i><input type="search" data-member-search placeholder="Search songs by number, title or author..." aria-label="Search songs"></div><div class="page-toolbar-filters">
   <select data-member-filter="book" aria-label="Song book"><option value="">All Song Books</option><?php foreach ($books as $b): ?><option><?= mp_h($b) ?></option><?php endforeach; ?></select>
   <select data-member-filter="language" aria-label="Language"><option value="">All Languages</option><?php foreach ($languages as $l): ?><option><?= mp_h($l) ?></option><?php endforeach; ?></select>

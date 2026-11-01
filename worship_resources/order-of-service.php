@@ -35,12 +35,12 @@ $recordFlags = JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP;
 <?php ce_show_flash(); ?>
 <div class="church-page-head">
     <div><h2><i class="fas fa-list-ol"></i> Order of Service</h2><p>Publish the order of service so members can follow along. Members see published orders only.</p></div>
-    <?php if ($ready): ?><button type="button" class="btn btn-primary" id="addBtn"><i class="fas fa-plus"></i> Add Order of Service</button><?php endif; ?>
+    <?php if ($ready): ?><button type="button" class="btn btn-outline-primary" data-content-bulk="order_of_service"><i class="fas fa-layer-group"></i> Add Multiple</button><button type="button" class="btn btn-primary" id="addBtn"><i class="fas fa-plus"></i> Add Order of Service</button><?php endif; ?>
 </div>
 <?php mc_worship_tabs('order_of_service'); ?>
 
 <?php if (!$ready): ?>
-<div class="alert alert-warning"><strong>Setup required.</strong> Run <code>database/member_content.sql</code> to create the Order of Service and hymn tables.</div>
+<div class="alert alert-warning"><strong>Setup required.</strong> Run <code>database/member_content.sql</code> to create the Order of Service and Church Songs tables.</div>
 <?php else: ?>
 <div class="church-stats">
     <div class="church-stat"><div class="church-stat-icon"><i class="fas fa-list"></i></div><div><b><?= count($rows) ?></b><span>Total Orders</span></div></div>
@@ -98,7 +98,7 @@ $recordFlags = JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP;
         </div>
         <label>Notes for Members<textarea name="notes" id="notes" rows="3" maxlength="5000"></textarea></label>
         <div>
-            <b>Service Items</b><small class="church-form-help">List each part of the service in order. Give readings by reference; link a hymn so members can open its study page.</small>
+            <b>Service Items</b><small class="church-form-help">List each part of the service in order. Give readings by reference; link a song so members can open its study page.</small>
             <div class="sos-items" id="itemsBox"></div>
             <button type="button" class="btn btn-sm btn-outline mt-2" id="addItem"><i class="fas fa-plus"></i> Add Item</button>
         </div>
@@ -110,9 +110,9 @@ $recordFlags = JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP;
     <div class="sos-item">
         <span class="sos-item-no"></span>
         <div class="sos-item-fields">
-            <input name="item_title[]" maxlength="200" placeholder="Item, e.g. Opening Hymn" required>
+            <input name="item_title[]" maxlength="200" placeholder="Item, e.g. Opening Song" required>
             <input name="item_led_by[]" maxlength="180" placeholder="Led by (optional)">
-            <select name="item_hymn_id[]" class="full"><option value="">No linked hymn</option><?php foreach ($hymnLabels as $id => $label): ?><option value="<?= (int)$id ?>"><?= ce_h($label) ?></option><?php endforeach; ?></select>
+            <select name="item_hymn_id[]" class="full"><option value="">No linked song</option><?php foreach ($hymnLabels as $id => $label): ?><option value="<?= (int)$id ?>"><?= ce_h($label) ?></option><?php endforeach; ?></select>
             <textarea name="item_details[]" rows="2" maxlength="2000" class="full" placeholder="Details, e.g. reading reference or response (optional)"></textarea>
         </div>
         <div class="sos-item-tools">
@@ -153,7 +153,7 @@ mcBindTable({
     view: r => {
         const fields = {'Title': r.title, 'Service Type': r.service_type, 'Date': r.service_date, 'Time': r.service_time, 'Status': r.status, 'Notes': r.notes};
         (r.items || []).forEach((it, i) => {
-            const parts = [it.led_by ? 'Led by ' + it.led_by : '', it.hymn_id && hymnLabels[it.hymn_id] ? 'Hymn: ' + hymnLabels[it.hymn_id] : '', it.details].filter(Boolean);
+            const parts = [it.led_by ? 'Led by ' + it.led_by : '', it.hymn_id && hymnLabels[it.hymn_id] ? 'Song: ' + hymnLabels[it.hymn_id] : '', it.details].filter(Boolean);
             fields[(i + 1) + '. ' + it.title] = parts.join('\n');
         });
         return fields;

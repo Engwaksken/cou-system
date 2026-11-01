@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS church_prayers (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ============================================================
--- CHURCH OF UGANDA HYMNS
+-- CHURCH OF UGANDA SONGS
 -- ============================================================
 
 CREATE TABLE IF NOT EXISTS church_hymns (
@@ -141,7 +141,7 @@ INSERT INTO permissions(permission_key,permission_name,module_name) VALUES
 ('order_of_service.manage','Add, edit, publish and delete Orders of Service','Worship Resources'),
 ('prayers.manage','Add, edit, publish and delete Church Prayers','Worship Resources'),
 ('hymns.manage','Add, edit, publish and delete Church of Uganda songs','Worship Resources'),
-('member.worship.view','View published Orders of Service and hymns','Worship Resources')
+('member.worship.view','View published Church Prayers, Orders of Service and Church Songs','Worship Resources')
 ON DUPLICATE KEY UPDATE permission_name=VALUES(permission_name),module_name=VALUES(module_name);
 
 -- Optional example: give a dedicated leader role its department's rights (adjust role names to your users).
