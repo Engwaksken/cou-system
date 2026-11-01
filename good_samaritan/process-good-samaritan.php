@@ -38,9 +38,10 @@ function gs_save_service(mysqli $conn, int $id, ?string $type, ?string $session)
     $stmt->bind_param('ssi', $type, $session, $id); $stmt->execute(); $stmt->close();
 }
 function gs_select_sql() {
-    return "SELECT g.*, m.full_name, m.member_no
+    return "SELECT g.*, m.full_name, m.member_no, u.full_name AS recorded_by_name
             FROM good_samaritan g
-            LEFT JOIN members m ON m.id = g.member_id";
+            LEFT JOIN members m ON m.id = g.member_id
+            LEFT JOIN users u ON u.id = g.recorded_by";
 }
 function gs_read_one(mysqli $conn, $id) {
     $stmt = $conn->prepare(gs_select_sql() . " WHERE g.id = ? LIMIT 1");
@@ -104,8 +105,9 @@ try {
         }
 
         if ($id <= 0) gs_json(false, 'Invalid record ID.');
-        $stmt = $conn->prepare("UPDATE good_samaritan SET receipt_no=?, member_id=?, amount=?, payment_method=?, given_on=?, notes=? WHERE id=?");
-        $stmt->bind_param('sidsssi', $receipt, $member_id, $amount, $method, $date, $notes, $id);
+        $recordedBy = (int)($_SESSION['user_id'] ?? 0) ?: null;
+        $stmt = $conn->prepare("UPDATE good_samaritan SET receipt_no=?, member_id=?, amount=?, payment_method=?, given_on=?, notes=?, recorded_by=? WHERE id=?");
+        $stmt->bind_param('sidsssii', $receipt, $member_id, $amount, $method, $date, $notes, $recordedBy, $id);
         $stmt->execute(); $stmt->close();
         if ($hasService) gs_save_service($conn, $id, $serviceType, $session);
         gs_json(true, 'Good Samaritan collection updated.');

@@ -12,7 +12,8 @@ try{
  $action=$_POST['action']??$_GET['action']??'list';
  if($action==='list'){
    $month=s($_GET['month']??date('Y-m'));
-   $rows=many("SELECT * FROM offertory WHERE DATE_FORMAT(service_date,'%Y-%m')='$month' ORDER BY service_date DESC,id DESC");
+    $hasRecordedBy=service_column_exists($conn,'offertory','recorded_by');
+    $rows=many("SELECT o.*".($hasRecordedBy?",u.full_name AS recorded_by_name":'')." FROM offertory o ".($hasRecordedBy?"LEFT JOIN users u ON u.id=o.recorded_by ":'')."WHERE DATE_FORMAT(o.service_date,'%Y-%m')='$month' ORDER BY o.service_date DESC,o.id DESC");
    $stats=[
     'month_total'=>(float)(one("SELECT COALESCE(SUM(total_amount),0) t FROM offertory WHERE DATE_FORMAT(service_date,'%Y-%m')='$month'")['t']??0),
     'year_total'=>(float)(one("SELECT COALESCE(SUM(total_amount),0) t FROM offertory WHERE YEAR(service_date)=YEAR(CURDATE())")['t']??0),
@@ -22,22 +23,24 @@ try{
  }
  if($action==='get'){
    $id=(int)($_GET['id']??0); if(!$id) oj(false,'Invalid offertory ID.');
-   $row=one("SELECT * FROM offertory WHERE id=$id"); if(!$row) oj(false,'Offertory record not found.');
+    $hasRecordedBy=service_column_exists($conn,'offertory','recorded_by');
+    $row=one("SELECT o.*".($hasRecordedBy?",u.full_name AS recorded_by_name":'')." FROM offertory o ".($hasRecordedBy?"LEFT JOIN users u ON u.id=o.recorded_by ":'')."WHERE o.id=$id"); if(!$row) oj(false,'Offertory record not found.');
    oj(true,'',['item'=>$row]);
  }
  if($action==='save'){
    $id=(int)($_POST['id']??0); $date=s($_POST['service_date']??date('Y-m-d')); $type=s($_POST['service_type']??'Sunday Service');
    $env=(float)($_POST['envelope_total']??0); $loose=(float)($_POST['loose_total']??0); $extra=(float)($_POST['extra']??0); $total=$env+$loose+$extra;
-   $counted=s($_POST['counted_by']??''); $witness=s($_POST['witnessed_by']??''); $notes=s($_POST['notes']??'');
+    $counted=s($_POST['counted_by']??''); $witness=s($_POST['witnessed_by']??''); $notes=s($_POST['notes']??'');
+    $recordedBy=(int)($_SESSION['user_id']??0); $hasRecordedBy=service_column_exists($conn,'offertory','recorded_by');
    // First, second, ... service; saved once database/service_session.sql has added the column.
    $session=trim((string)($_POST['service_session']??'')); $session=in_array($session,service_session_options(),true)?$session:'';
    $hasSession=service_column_exists($conn,'offertory','service_session'); $sessionSql=$session!==''?"'".s($session)."'":'NULL';
    if($total<=0) oj(false,'Total offertory amount must be greater than zero.');
    if($id>0){
-    $ok=mysqli_query($conn,"UPDATE offertory SET service_date='$date',service_type='$type',".($hasSession?"service_session=$sessionSql,":'')."envelope_total=$env,loose_total=$loose,total_amount=$total,counted_by='$counted',witnessed_by='$witness',notes='$notes' WHERE id=$id");
+     $ok=mysqli_query($conn,"UPDATE offertory SET service_date='$date',service_type='$type',".($hasSession?"service_session=$sessionSql,":'').($hasRecordedBy?"recorded_by=$recordedBy,":'')."envelope_total=$env,loose_total=$loose,total_amount=$total,counted_by='$counted',witnessed_by='$witness',notes='$notes' WHERE id=$id");
     if(!$ok) oj(false,'Update failed: '.mysqli_error($conn)); oj(true,'Offertory updated successfully.');
    } else {
-    $ok=mysqli_query($conn,"INSERT INTO offertory (service_date,service_type,".($hasSession?'service_session,':'')."envelope_total,loose_total,total_amount,counted_by,witnessed_by,notes) VALUES ('$date','$type',".($hasSession?"$sessionSql,":'')."$env,$loose,$total,'$counted','$witness','$notes')");
+     $ok=mysqli_query($conn,"INSERT INTO offertory (service_date,service_type,".($hasSession?'service_session,':'').($hasRecordedBy?'recorded_by,':'')."envelope_total,loose_total,total_amount,counted_by,witnessed_by,notes) VALUES ('$date','$type',".($hasSession?"$sessionSql,":'').($hasRecordedBy?"$recordedBy,":'')."$env,$loose,$total,'$counted','$witness','$notes')");
     if(!$ok) oj(false,'Insert failed: '.mysqli_error($conn)); oj(true,'Offertory recorded successfully.',['id'=>mysqli_insert_id($conn)]);
    }
  }
